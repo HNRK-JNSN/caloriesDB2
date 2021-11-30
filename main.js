@@ -70,6 +70,6 @@ klient.connect();
 
 app.use(express.static('public'))
 
-app.listen(api_port, () => {
+app.listen(PORT, () => {
     console.log(`Calories lytter på http://localhost:${PORT}`)
 })
