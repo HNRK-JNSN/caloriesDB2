@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>App M14</title>
+        <script src="https://d3js.org/d3.v6.min.js"></script>
+    </head>
+    <body>
+        <h2>My Food</h2>
+        <script>
+            d3.json('/food')
+            .then(function(data) {
+                console.log(data)
+                function tabulate(data, columns) {
+                    var table = d3.select('body').append('table')
+                    var thead = table.append('thead')
+                    var	tbody = table.append('tbody');
+
+                    // append the header row
+                    thead.append('tr')
+                    .selectAll('th')
+                    .data(columns).enter()
+                    .append('th')
+                        .text(function (column) { return column; });
+
+                    // create a row for each object in the data
+                    var rows = tbody.selectAll('tr')
+                    .data(data)
+                    .enter()
+                    .append('tr');
+
+                    // create a cell in each row for each column
+                    var cells = rows.selectAll('td')
+                    .data(function (row) {
+                        return columns.map(function (column) {
+                        return {column: column, value: row[column]};
+                        });
+                    })
+                    .enter()
+                    .append('td')
+                        .text(function (d) { return d.value; });
+
+                return table;
+                }
+
+                // render the table(s)
+                tabulate(data.foods, 
+                    ['food_id', 'category_id', 'food_item', 'unit_id', 'cals_per_unit', 'kj_per_unit']
+                ); 
+            })
+            .catch(function(error) {
+                // Error handling
+            })
+        </script>
+    </body>
+</html>
